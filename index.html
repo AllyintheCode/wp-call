@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>WhatsApp</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+
+        <!-- ================= EKRAN 1: GƏLƏN ZƏNG (INCOMING CALL) ================= -->
+        <div class="incoming-call-screen" id="incoming-screen">
+            <!-- Arxa fon bluru -->
+            <div class="bg-blur"></div>
+
+            <!-- Yuxarı başlıq -->
+            <div class="incoming-header">
+                <div class="encryption-tag">
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor">
+                        <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+                    </svg>
+                    <span>WhatsApp video zəngi</span>
+                </div>
+                <h1 class="caller-name">Ali</h1>
+                <p class="call-type-text">Zəng...</p>
+            </div>
+
+            <!-- Profil şəkli / Zəng animasiyası -->
+            <div class="avatar-container">
+                <div class="pulse-ring ring-1"></div>
+                <div class="pulse-ring ring-2"></div>
+                <div class="pulse-ring ring-3"></div>
+                <div class="avatar-circle">
+                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=400&q=80" alt="Ali" class="avatar-img" id="caller-avatar">
+                </div>
+            </div>
+
+            <!-- Aşağı zəng qəbul etmə düyməsi -->
+            <div class="incoming-footer">
+                <div class="actions-wrapper">
+                    <!-- Yaşıl Zəngi Qəbul Et Düyməsi -->
+                    <button class="call-btn btn-accept" id="btn-answer" aria-label="Zəngi aç">
+                        <div class="btn-ripple"></div>
+                        <svg viewBox="0 0 24 24" width="36" height="36" fill="currentColor">
+                            <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.44-5.15-3.75-6.59-6.59l1.97-1.57c.28-.27.36-.67.25-1.02A11.36 11.36 0 0 1 8.5 4.3c0-.55-.45-1-1-1H4.11c-.55 0-1 .45-1 1 0 9.39 7.63 17.02 17.02 17.02.55 0 1-.45 1-1v-3.38c-.01-.56-.46-1.01-1.02-1.06z"/>
+                        </svg>
+                    </button>
+                    <span class="btn-caption">Cavab vermək üçün toxunun</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= EKRAN 2: AKTİV GÖRÜNTÜLÜ ZƏNG (ACTIVE VIDEO CALL) ================= -->
+        <div class="active-call-screen hidden" id="active-screen">
+            <!-- Kamera görüntüsü (Real Kamera Stream) -->
+            <div class="video-feed-wrapper">
+                <video id="user-camera" autoplay playsinline muted class="camera-stream"></video>
+                <!-- Kamera açılana qədər və ya icazə verilmədikdə fallback fon -->
+                <div class="camera-fallback" id="camera-fallback">
+                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=800&q=80" alt="Video feed" class="fallback-img">
+                </div>
+                <div class="active-overlay"></div>
+            </div>
+
+            <!-- Aktiv zəng yuxarı bar -->
+            <div class="active-header">
+                <div class="active-header-left">
+                    <span class="active-caller-name">Ali</span>
+                    <span class="call-timer" id="call-timer">00:00</span>
+                </div>
+                <div class="active-header-right">
+                    <div class="encryption-badge">
+                        <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor">
+                            <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sağ küncdəki kiçik ön kamera (PiP) -->
+            <div class="pip-container" id="pip-container">
+                <div class="pip-content">
+                    <span class="pip-label">Sən</span>
+                </div>
+            </div>
+
+            <!-- Aşağı İdarəetmə Paneli (Səs, Kamera, Adboy) -->
+            <div class="active-footer">
+                <div class="control-panel">
+                    <!-- Səs İkonu (Mute / Unmute) -->
+                    <button class="footer-btn" id="btn-toggle-mic" title="Mikrofon">
+                        <div class="btn-icon-wrapper" id="mic-icon-wrapper">
+                            <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" id="mic-on-icon">
+                                <path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/>
+                            </svg>
+                            <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" class="hidden" id="mic-off-icon">
+                                <path d="M19 11h-1.7c0 .74-.16 1.43-.43 2.05l1.23 1.23c.56-.98.9-2.09.9-3.28zm-4.02.17c0-.06.02-.11.02-.17V5c0-1.66-1.34-3-3-3S9 3.34 9 5v.18l5.98 5.99zM4.27 3L3 4.27l6.01 6.01V11c0 1.66 1.33 3 2.99 3 .22 0 .44-.03.65-.08l4.07 4.07c-1.17.65-2.5 1.01-3.72 1.01-3.41 0-6.23-2.72-6.23-6.13H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c1.3-.19 2.51-.69 3.56-1.41l3.17 3.17L21 18.21 4.27 3z"/>
+                            </svg>
+                        </div>
+                    </button>
+
+                    <!-- Kamera İkonu (Kameranı çevir / aç-bağla) -->
+                    <button class="footer-btn" id="btn-toggle-cam" title="Kamera">
+                        <div class="btn-icon-wrapper" id="cam-icon-wrapper">
+                            <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor">
+                                <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
+                            </svg>
+                        </div>
+                    </button>
+
+                    <!-- Adboy (Zəngi bitir - Qırmızı düymə) -->
+                    <button class="footer-btn btn-hangup" id="btn-hangup" title="Zəngi bitir (Adboy)">
+                        <svg viewBox="0 0 24 24" width="32" height="32" fill="white">
+                            <path d="M12 9c-1.6 0-3.15.25-4.6.72v3.1c0 .39-.23.74-.56.9-.98.49-1.87 1.12-2.66 1.85-.18.18-.43.28-.7.28-.28 0-.53-.11-.71-.29L.29 13.08c-.18-.17-.29-.42-.29-.7 0-.28.11-.53.29-.71C3.34 8.78 7.46 7 12 7s8.66 1.78 11.71 4.67c.18.18.29.43.29.71 0 .28-.11.53-.29.71l-2.48 2.48c-.18.18-.43.29-.71.29-.27 0-.52-.11-.7-.28-.79-.74-1.69-1.36-2.67-1.85-.33-.16-.56-.5-.56-.9v-3.1C15.15 9.25 13.6 9 12 9z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= ZƏNG BİTDİ (CALL ENDED) ================= -->
+        <div class="ended-screen hidden" id="ended-screen">
+            <div class="ended-content">
+                <div class="ended-icon">
+                    <svg viewBox="0 0 24 24" width="40" height="40" fill="#ea0038">
+                        <path d="M12 9c-1.6 0-3.15.25-4.6.72v3.1c0 .39-.23.74-.56.9-.98.49-1.87 1.12-2.66 1.85-.18.18-.43.28-.7.28-.28 0-.53-.11-.71-.29L.29 13.08c-.18-.17-.29-.42-.29-.7 0-.28.11-.53.29-.71C3.34 8.78 7.46 7 12 7s8.66 1.78 11.71 4.67c.18.18.29.43.29.71 0 .28-.11.53-.29.71l-2.48 2.48c-.18.18-.43.29-.71.29-.27 0-.52-.11-.7-.28-.79-.74-1.69-1.36-2.67-1.85-.33-.16-.56-.5-.56-.9v-3.1C15.15 9.25 13.6 9 12 9z"/>
+                    </svg>
+                </div>
+                <h2>Zəng başa çatdı</h2>
+                <p id="final-duration">00:00</p>
+                <button class="btn-restart" id="btn-restart">Yenidən zəng et</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
